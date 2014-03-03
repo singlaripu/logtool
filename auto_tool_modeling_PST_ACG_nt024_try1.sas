@@ -2,8 +2,6 @@ options obs = max compress = yes nosource nonotes;
 
 
 /* options mstored sasmstore=maclib nofmterr label errors=2 ls=100 ps=50 compress=yes obs=max ; */
-
-
 /* options symbolgen mlogic mprint mfile; */
 
 libname dev "/gdm/apac/reg_pricing/train/ripu";
