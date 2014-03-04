@@ -1,7 +1,6 @@
 
-
-
-/* %include '/gdm/apac/reg_pricing/train/ripu/macros/wgt_ranks.sas';
+/* options obs = max compress = yes nosource nonotes; */
+%include '/gdm/apac/reg_pricing/train/ripu/macros/wgt_ranks.sas';
 %include '/gdm/apac/reg_pricing/train/ripu/macros/simple_merge.sas';
 %include '/gdm/apac/reg_pricing/train/ripu/macros/proc_reg_macro.sas';
 %include '/gdm/apac/reg_pricing/train/ripu/macros/proc_logistic_macro.sas';
@@ -31,9 +30,7 @@
 %include '/gdm/apac/reg_pricing/train/ripu/macros/model_input_autoiter.sas';
 %include '/gdm/apac/reg_pricing/train/ripu/macros/pnc_macro.sas';
 %include '/gdm/apac/reg_pricing/train/ripu/macros/model_autoiter.sas';
-%include '/gdm/apac/reg_pricing/train/ripu/macros/shortlist15_macro.sas'; */
-
-
+%include '/gdm/apac/reg_pricing/train/ripu/macros/shortlist15_macro.sas';
 
 %macro auto_model_start(
 				depvar,
@@ -48,32 +45,27 @@
 				_libname_curr_ams
 			);
 
-	%MACRO TRANSFORM;
-
-	%mend TRANSFORM;
-
-	/* options obs = max compress = yes nosource nonotes; */
+	%MACRO TRANSFORM;%mend TRANSFORM;
 
 	%let _actual_time_ams = %sysfunc(putn(%sysfunc(datetime()),datetime22.));
 	%let _excel_woe_ams = "woe_cs_ts_&apr..xls" ;
 	%let _excel_steps_ams = "model_iter_steps_&apr..xls";
-	%let _excel_summary_ams  = "model_iter_summary_&apr..xls";
-	%let _excel_summary_short_ams  = "model_iter_summary_short_&apr..xls";
+	%let _excel_summary_ams  = "model_iter_summary_&apr..csv";
+	%let _excel_summary_short_ams  = "model_iter_summary_short_&apr..csv";
 	%let _excel_pnc_steps_ams = "pnc_steps_&apr..xls";
-	%let _excel_pnc_summary_ams = "pnc_summary_&apr..xls";
-	%let _excel_pnc_summary_short_ams = "pnc_summary_short_&apr..xls";
+	%let _excel_pnc_summary_ams = "pnc_summary_&apr..csv";
+	%let _excel_pnc_summary_short_ams = "pnc_summary_short_&apr..csv";
 
 	%if &_auto_treat_flag_ams. = true %then %do;
 
 		%let _vl_gvfd = ;		
 		%auto_treat_macro(&_dev_data_ams., &_val_data_ams.);
 		%let _var_list_return_ams = &_vl_gvfd.;
-
 		%variable_drop_p1p99_macro(_p1_out_atm, _p99_out_atm, &_dev_data_ams., &_val_data_ams., &_var_list_return_ams.);
+
 	%end;
 
 	%auto_corr_macro(&_dev_data_ams., &_val_data_ams.);
-
 
 	%let last = 0;
 	%let _vl_gvfd = ;
@@ -100,6 +92,7 @@
 		set  &apr._val_extra;
 	run;
 
+	%put "final selected for pnc", &_final_selected_s15m.;
 
 	%pnc_macro(
 		&apr._dev_extra, 
@@ -108,8 +101,9 @@
 		&_excel_pnc_summary_ams.,
 		&_excel_pnc_summary_short_ams.,
 		TRANSFORM,
-		&_final_selected_s15m.,
+		&_final_selected_s15m.
 		);
 
-%mend;
+%mend auto_model_start;
 
+ 
