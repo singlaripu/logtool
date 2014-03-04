@@ -29,7 +29,6 @@
 		set &_ds_in_val_pm. (keep = &_pnc_vars_pm. &depvar. &wgt. /* &cust_id. */) ;
 		%&_transform_macro_pm.;
 	run;
-
 		
 	data _mod_iter_summ_pm;
 		set _null_;
@@ -47,12 +46,10 @@
 
 			%do _k_pm = %sysevalf(&_j_pm.+1) %to &_max_vars_pm.;
 
-
-
-				%put %scan(&_pnc_vars_pm., &_i_pm, %str( )), %scan(&_pnc_vars_pm., &_j_pm, %str( )), %scan(&_pnc_vars_pm., &_k_pm, %str( ));
-				%put &_i_pm., &_j_pm., &_k_pm.;
 				%let _iteration_count_pm = %sysevalf(&_iteration_count_pm. + 1);
-				%put &_iteration_count_pm.;
+/* 				%put %scan(&_pnc_vars_pm., &_i_pm, %str( )), %scan(&_pnc_vars_pm., &_j_pm, %str( )), %scan(&_pnc_vars_pm., &_k_pm, %str( ));
+				%put &_i_pm., &_j_pm., &_k_pm.;
+				%put &_iteration_count_pm.; */
 
 				%let _var_list_pm = %scan(&_pnc_vars_pm., &_i_pm, %str( )) %scan(&_pnc_vars_pm., &_j_pm, %str( )) %scan(&_pnc_vars_pm., &_k_pm, %str( ));
 				%let _var_combination_pm = %cmpres(&_i_pm.-&_j_pm.-&_k_pm.);
@@ -64,18 +61,15 @@
 					set _mod_iter_summ_pm _stats_summary_pm;
 				run;
 
-				proc print data = _stats_summary_pm; run;	
-
+				/* proc print data = _stats_summary_pm; run;	 */
 
 
 				%do _l_pm = %sysevalf(&_k_pm.+1) %to &_max_vars_pm.;
 
-
-					%put %scan(&_pnc_vars_pm., &_i_pm, %str( )), %scan(&_pnc_vars_pm., &_j_pm, %str( )), %scan(&_pnc_vars_pm., &_k_pm, %str( )), %scan(&_pnc_vars_pm., &_l_pm, %str( ));
-					%put &_i_pm., &_j_pm., &_k_pm., &_l_pm;
 					%let _iteration_count_pm = %sysevalf(&_iteration_count_pm. + 1);
-
-					%put &_iteration_count_pm.;
+/* 					%put %scan(&_pnc_vars_pm., &_i_pm, %str( )), %scan(&_pnc_vars_pm., &_j_pm, %str( )), %scan(&_pnc_vars_pm., &_k_pm, %str( )), %scan(&_pnc_vars_pm., &_l_pm, %str( ));
+					%put &_i_pm., &_j_pm., &_k_pm., &_l_pm;
+					%put &_iteration_count_pm.; */
 
 					%let _var_list_pm = %scan(&_pnc_vars_pm., &_i_pm, %str( )) %scan(&_pnc_vars_pm., &_j_pm, %str( )) %scan(&_pnc_vars_pm., &_k_pm, %str( )) %scan(&_pnc_vars_pm., &_l_pm, %str( ));
 					%let _var_combination_pm = %cmpres(&_i_pm.-&_j_pm.-&_k_pm.-&_l_pm.);
@@ -87,16 +81,15 @@
 						set _mod_iter_summ_pm _stats_summary_pm;
 					run;
 
-					proc print data = _stats_summary_pm; run;
-
+					/* proc print data = _stats_summary_pm; run; */
 
 
 					%do _m_pm = %sysevalf(&_l_pm.+1) %to &_max_vars_pm.;
 
-						%put %scan(&_pnc_vars_pm., &_i_pm, %str( )), %scan(&_pnc_vars_pm., &_j_pm, %str( )), %scan(&_pnc_vars_pm., &_k_pm, %str( )), %scan(&_pnc_vars_pm., &_l_pm, %str( )), %scan(&_pnc_vars_pm., &_m_pm, %str( ));
-						%put &_i_pm., &_j_pm., &_k_pm., &_l_pm, &_m_pm;
 						%let _iteration_count_pm = %sysevalf(&_iteration_count_pm. + 1);
-						%put &_iteration_count_pm.;
+/* 						%put %scan(&_pnc_vars_pm., &_i_pm, %str( )), %scan(&_pnc_vars_pm., &_j_pm, %str( )), %scan(&_pnc_vars_pm., &_k_pm, %str( )), %scan(&_pnc_vars_pm., &_l_pm, %str( )), %scan(&_pnc_vars_pm., &_m_pm, %str( ));
+						%put &_i_pm., &_j_pm., &_k_pm., &_l_pm, &_m_pm;
+						%put &_iteration_count_pm.; */
 
 						%let _var_list_pm = %scan(&_pnc_vars_pm., &_i_pm, %str( )) %scan(&_pnc_vars_pm., &_j_pm, %str( )) %scan(&_pnc_vars_pm., &_k_pm, %str( )) %scan(&_pnc_vars_pm., &_l_pm, %str( )) %scan(&_pnc_vars_pm., &_m_pm, %str( ));
 						%let _var_combination_pm = %cmpres(&_i_pm.-&_j_pm.-&_k_pm.-&_l_pm.-&_m_pm.);
@@ -108,9 +101,8 @@
 							set _mod_iter_summ_pm _stats_summary_pm;
 						run;
 
-						proc print data = _stats_summary_pm; run;	
+						/* proc print data = _stats_summary_pm; run; */	
 						
-
 					%end;
 
 				%end;
@@ -126,18 +118,8 @@
 
 	%put "iteration_count", &_iteration_count_pm.;
 
-	ods html file = &_excel_summary_pm.;
+	proc export data=_mod_iter_summ_g_pm outfile=&_excel_summary_pm. dbms=csv replace; run; 
+	proc export data=_mod_iter_summ_short_g_pm outfile=&_excel_summary_short_pm. dbms=csv replace; run; 
 
-	proc print data = _mod_iter_summ_g_pm;
-	run;
-
-	ods html close;
-
-	ods html file = &_excel_summary_short_pm.;
-
-	proc print data = _mod_iter_summ_short_g_pm;
-	run;
-
-	ods html close;
 
 %mend;
