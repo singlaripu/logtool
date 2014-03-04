@@ -46,7 +46,7 @@
 			%let _vl_gvfd = ;
 			%get_varlist_from_dataset(_shortlist1_save_t_s15m, );
 			
-			%put "short_summary_top3", &_vl_gvfd.;
+			/* %put "short_summary_top3", &_vl_gvfd.; */
 
 			%let _final_selected_s15m = &_final_selected_s15m. &_vl_gvfd.;
 
@@ -55,7 +55,7 @@
 			%let _vl_gvfd = ;
 			%get_varlist_from_dataset(_shortlist1_t_s15m, );
 			
-			%put "short_summary_top1", &_vl_gvfd.;
+			/* %put "short_summary_top1", &_vl_gvfd.; */
 
 			%let _existing_s15m = &_existing_s15m. &_vl_gvfd.;
 
@@ -111,32 +111,20 @@
 			%let _vl_gvfd = ;
 			%get_varlist_from_dataset(_shortlist2_s15m, );
 
-			%put "full_summary_merged", &_vl_gvfd.;
+			/* %put "full_summary_merged", &_vl_gvfd.; */
 
 			%let _newvar_s15m = &_vl_gvfd.;
 
-			%put "existing", &_existing_s15m.;
+			/* %put "existing", &_existing_s15m.;
 			%put "newvar", &_newvar_s15m.;
-			%put "final_selected", &_final_selected_s15m.;
+			%put "final_selected", &_final_selected_s15m.; */
 
 		%end;
 
 	%end;
 
-	ods html file = &_excel_sum_s15m.;
-
-	proc print data = _mod_iter_sum_glob_s15m;
-	run;
-
-	ods html close;
-
-	ods html file = &_excel_sum_short_s15m.;
-
-	proc print data = _mod_iter_sum_shrt_glob_s15m;
-	run;
-
-	ods html close;
-
+	proc export data=_mod_iter_sum_glob_s15m outfile=&_excel_sum_s15m. dbms=csv replace; run; 
+	proc export data=_mod_iter_sum_shrt_glob_s15m outfile=&_excel_sum_short_s15m. dbms=csv replace; run; 
 
 	
 %mend;
