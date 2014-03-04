@@ -1,4 +1,4 @@
-options obs = max compress = yes nosource nonotes;
+options obs = max compress = yes nosource nosource2 nonotes;
 
 /* options mstored sasmstore=maclib nofmterr label errors=2 ls=100 ps=50 compress=yes obs=max ; */
 /* options symbolgen mlogic mprint mfile; */
@@ -51,37 +51,7 @@ data val_data;
 run ;
 /****************************** END Prepare the modeling dataset ******************************/
 
-%include '/gdm/apac/reg_pricing/train/ripu/macros/wgt_ranks.sas';
-%include '/gdm/apac/reg_pricing/train/ripu/macros/simple_merge.sas';
-%include '/gdm/apac/reg_pricing/train/ripu/macros/proc_reg_macro.sas';
-%include '/gdm/apac/reg_pricing/train/ripu/macros/proc_logistic_macro.sas';
-%include '/gdm/apac/reg_pricing/train/ripu/macros/post_woe_create.sas';
-%include '/gdm/apac/reg_pricing/train/ripu/macros/post_autoiter_macro.sas';
-%include '/gdm/apac/reg_pricing/train/ripu/macros/pick_top_few_vars.sas';
-%include '/gdm/apac/reg_pricing/train/ripu/macros/normalize.sas';
-%include '/gdm/apac/reg_pricing/train/ripu/macros/merge_ds_dummy_id.sas';
-%include '/gdm/apac/reg_pricing/train/ripu/macros/loop_over_varlist.sas';
-%include '/gdm/apac/reg_pricing/train/ripu/macros/ks_format.sas';
-%include '/gdm/apac/reg_pricing/train/ripu/macros/indicator_create.sas';
-%include '/gdm/apac/reg_pricing/train/ripu/macros/grp_bands.sas';
-%include '/gdm/apac/reg_pricing/train/ripu/macros/get_varlist_from_dataset.sas';
-%include '/gdm/apac/reg_pricing/train/ripu/macros/get_len_macro_var.sas';
-%include '/gdm/apac/reg_pricing/train/ripu/macros/get_corr_coeff.sas';
-%include '/gdm/apac/reg_pricing/train/ripu/macros/extracti_post_ks_macro.sas';
-%include '/gdm/apac/reg_pricing/train/ripu/macros/auto_treat_missing.sas';
-%include '/gdm/apac/reg_pricing/train/ripu/macros/MOD4.sas';
-%include '/gdm/apac/reg_pricing/train/ripu/macros/woe_create.sas';
-%include '/gdm/apac/reg_pricing/train/ripu/macros/loop_over_varlist_in_ds.sas';
-%include '/gdm/apac/reg_pricing/train/ripu/macros/my_ks_macro.sas';
-%include '/gdm/apac/reg_pricing/train/ripu/macros/normalize_validation.sas';
-%include '/gdm/apac/reg_pricing/train/ripu/macros/auto_corr_macro.sas';
-%include '/gdm/apac/reg_pricing/train/ripu/macros/auto_treat_macro.sas';
-%include '/gdm/apac/reg_pricing/train/ripu/macros/variable_drop_p1p99_macro.sas';
-%include '/gdm/apac/reg_pricing/train/ripu/macros/call_fineclass.sas';
-%include '/gdm/apac/reg_pricing/train/ripu/macros/model_input_autoiter.sas';
-%include '/gdm/apac/reg_pricing/train/ripu/macros/pnc_macro.sas';
-%include '/gdm/apac/reg_pricing/train/ripu/macros/model_autoiter.sas';
-%include '/gdm/apac/reg_pricing/train/ripu/macros/shortlist15_macro.sas';
+
 %include "/gdm/apac/reg_pricing/train/ripu/macros/auto_model_start.sas"; 
 
 %auto_model_start(
