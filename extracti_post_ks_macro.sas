@@ -103,15 +103,19 @@
 	quit;
 
 
+	%let _p_suff_epkm = %sysevalf(100*&_min_p_epkm.);
+
 	proc sql;
 		create table &_pvalue_ds_epkm. as
 		select 
 			"&_var_epkm." as &_var_identifier_epkm. format $32.,
 			max(ProbChiSq) as max_pvalue_&_suff_epkm. format PVALUE6.4,
-			sum(case when ProbChiSq > &_min_p_epkm. then 1 else 0 end) as pvalue_gt5_cnt_&_suff_epkm.
+			sum(case when ProbChiSq > &_min_p_epkm. then 1 else 0 end) as pvalue_gt&_p_suff_epkm._cnt_&_suff_epkm.
 		from 
 			&_aa_ds_epkm.;
 	quit;
+
+
 
 	proc sort data = &_aa_ds_epkm. (keep = &_var_identifier_epkm. Estimate) out = &_aa_srt_ds_epkm. (rename = (Estimate = est_&_suff_epkm.));
 		by &_var_identifier_epkm.;
