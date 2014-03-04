@@ -1,6 +1,13 @@
 
 
-%macro model_input_autoiter(_ds_dev_mia, _ds_val_mia, _vl_mia, _var_mia, _stats_summary_mia, _var_identifier_mia);
+%macro model_input_autoiter(
+			_ds_dev_mia, 
+			_ds_val_mia, 
+			_vl_mia, 
+			_var_mia, 
+			_stats_summary_mia, 
+			_var_identifier_mia
+		);
 
 	title " ";
 	data _transformed1_mia ;
@@ -17,22 +24,19 @@
 
 	%proc_logistic_macro(_transformed_mia, _model_devt_mia, &wgt., &depvar., &_vl_mia., _transformed_mia, _scored_mia, _aa_dev_mia, _concord_ds_mia);
 
-	TITLE "KS TABLE -- DEVELOPMENT";
+ 	
 	%my_ks_macro(_scored_mia, P_1, &wgt., &depvar., _z2_mia, _uni_rank_data_mia);
-
 
 
 	%extracti_post_ks_macro(_z2_mia, _z4_dev_mia, &_var_mia., dev, _z4_dev_v1_mia, _z4_dev_v2_mia, _z5_dev_mia, _vif_ds_dev_mia, _PEr_dev_mia, _pvalue_ds_dev_mia, 0.05, _aa_dev_mia, _aa_dev_srt_mia, &_var_identifier_mia.);
 
-
-	title "VALIDATION";
-
 	data _val_mia  ;
 		set &_ds_val_mia. (keep = &_vl_mia. &depvar. &wgt. );
-
 	run;
 
+
 	%normalize_validation(&_vl_mia., _transformed1_mia, _val_mia);
+
 
 	%proc_reg_macro(_val_mia, &wgt., &depvar., &_vl_mia., _PEr_val_mia);
 
@@ -52,10 +56,7 @@
 
 	%grp_bands(_scored_mia, _scored_mia, _uni_rank_data_mia, P_1, rnk_val);
 
-	TITLE "KS TABLE with same bining as development -- VALIDATION";
 	%ks_format(_scored_mia, &wgt., &depvar., rnk_val, P_1, _z2_mia);
-
-
 
  	%extracti_post_ks_macro(_z2_mia, _z4_val_mia, &_var_mia., val, _z4_val_v1_mia, _z4_val_v2_mia, _z5_val_mia, _vif_ds_val_mia, _per_val_mia, _pvalue_ds_val_mia, 0.3, _aa_val_mia, _aa_val_srt_mia, &_var_identifier_mia.);
 
@@ -84,7 +85,6 @@
 	proc sql;
 		create table _est_sign_check_mia as
 		select 
-			/* "&_var_mia." as &_var_identifier_mia., */
 			count(*) as est_sign_mismatch_cnt
 		from 
 			_aa_merged_mia
@@ -115,12 +115,12 @@
 			_z4_val_v1_mia (obs=1 in=p) 
 			_z4_val_v2_mia (obs=1 in=q)
 			_z5_val_mia (in=j) 
-			/* sign_new_var_ds (in=k) */
 			_concordance_ds1_mia (in=l);
 		by &_var_identifier_mia.;
-		if a and b and c and d and e and f and g and j /* and k */ and l and m and o and p and q;
+		if a and b and c and d and e and f and g and j and l and m and o and p and q;
 		ks_diff = abs(KS_dev - KS_val);
 	run;
+
 
 
 %mend;
