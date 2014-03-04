@@ -41,16 +41,16 @@
 			quit;
 
 
-			%pick_top_few_vars(_mod_iter_sum_shrt_s15m, 1, 3, &_var_identifier_s15m., _shortlist1_save_s15m);
+			%pick_top_few_vars(_mod_iter_sum_shrt_s15m, 1, 3, &_var_identifier_s15m., _shortlist1_save_s15m, _shortlist1_save_t_s15m);
 			%let last = 0;
 			%let _vl_gvfd = ;
-			%get_varlist_from_dataset(_shortlist1_save_s15m, );
+			%get_varlist_from_dataset(_shortlist1_save_t_s15m, );
 			
 			%put "short_summary_top3", &_vl_gvfd.;
 
 			%let _final_selected_s15m = &_final_selected_s15m. &_vl_gvfd.;
 
-			%pick_top_few_vars(_mod_iter_sum_shrt_s15m, 1, 1, &_var_identifier_s15m., _shortlist1_t_s15m);
+			%pick_top_few_vars(_mod_iter_sum_shrt_s15m, 1, 1, &_var_identifier_s15m., _shortlist1_s15m_junk, _shortlist1_t_s15m);
 			%let last = 0;
 			%let _vl_gvfd = ;
 			%get_varlist_from_dataset(_shortlist1_t_s15m, );
@@ -63,7 +63,6 @@
 				select count(*)  into: _tot_vars_s15m from _mod_iter_sum_s15m; 
 			quit;
 
-			/* %put &_tot_vars_s15m.; */
 
 			proc sort data = _mod_iter_sum_s15m (keep = &_var_identifier_s15m. &_variable_score_s15m.);
 				by descending &_variable_score_s15m. ;
@@ -95,7 +94,7 @@
 			run;
 
 			data _shortlist2_s15m;
-				merge _shortlist1_s15m (in=a) _shortlist1_save_s15m(in=b);
+				merge _shortlist1_s15m (in=a) _shortlist1_save_s15m (in=b);
 				by &_var_identifier_s15m.;
 				if a and not b;
 			run;
