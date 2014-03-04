@@ -9,7 +9,7 @@
 		_pnc_vars_pm
 		);
 
-	%let _var_identifier_pm = var_combinaiton;
+	%let _var_identifier_pm = variable;
 	%let _variable_score_pm = variable_score;
 
 	data _mod_iter_summ_g_pm;
