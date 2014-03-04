@@ -85,19 +85,13 @@
 	proc sql;
 		create table _est_sign_check_mia as
 		select 
+			"&_var_mia." as &_var_identifier_mia. format $32.,
 			count(*) as est_sign_mismatch_cnt
 		from 
 			_aa_merged_mia
 		where
 			sign_check <= 0;
 	quit;
-
-
-	data _est_sign_check_mia;
-		format &_var_identifier_mia. $32.;
-		set _est_sign_check_mia;
-		&_var_identifier_mia. = "&_var_mia.";
-	run;
 
 
 	data &_stats_summary_mia.;
@@ -117,7 +111,7 @@
 			_z5_val_mia (in=j) 
 			_concordance_ds1_mia (in=l);
 		by &_var_identifier_mia.;
-		if a and b and c and d and e and f and g and j and l and m and o and p and q;
+		if a and b and c and d and e and f and g and h and j and l and m and o and p and q;
 		ks_diff = abs(KS_dev - KS_val);
 	run;
 
