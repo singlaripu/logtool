@@ -1,8 +1,6 @@
 
 %macro auto_treat_macro(_ds_dev_atm, _ds_val_atm);
 
-
-
 	proc means  noprint data = &_ds_dev_atm. n nmiss min max  P1 P99 ;
 		weight &wgt.;
 		output out = _p1_out_atm p1=;
@@ -18,7 +16,7 @@
 	
 
 	%macro rename1(_suff);
-		rename 	&_var_lov. = var&_cnt_lov._&_suff.;
+		rename 	&_var_lov_l. = var&_cnt_lov_l._&_suff.;
 	%mend rename1;
 
 	%macro dummy_macro; 
@@ -28,8 +26,8 @@
 	%loop_over_varlist_in_ds(_p99_out_atm, _TYPE_ _FREQ_ &depvar., &_vl_gvfd., rename1(p99_), dummy_macro);
 
 	%macro capfloor(_suff);
-		&_var_lov. = max(min(&_var_lov., var&_cnt_lov._p99_), var&_cnt_lov._p1_);
-		drop var&_cnt_lov._p99_ var&_cnt_lov._p1_;
+		&_var_lov_l. = max(min(&_var_lov_l., var&_cnt_lov_l._p99_), var&_cnt_lov_l._p1_);
+		drop var&_cnt_lov_l._p99_ var&_cnt_lov_l._p1_;
 	%mend capfloor;
 
 	%macro set_data;

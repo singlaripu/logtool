@@ -56,28 +56,28 @@
 
 	%macro woe_create_calls_macro_cf;
 
-		%MOD4(&_var_lov., _subset_cf, _LOGG_B_cf, bad, good, ind);
+		%MOD4(&_var_lov_k., _subset_cf, _LOGG_B_cf, bad, good, ind);
 
 		data _null_;
-			set _corr_cov_cf (keep = &_var_lov.);
-			call symput('_var_sign_cf',  &_var_lov.);
+			set _corr_cov_cf (keep = &_var_lov_k.);
+			call symput('_var_sign_cf',  &_var_lov_k.);
 		run;
 
 		%let _woe_rr_diff_cf1 = %sysevalf(-1.0*&_woe_rr_diff_cf.);
 
 		%if %sysevalf(&_var_sign_cf. gt 0) %then %do;
-			%woe_create(&_woe_rr_diff_cf1., _subset_cf, &_woe_pp_diff_cf., _subset_cf_val, _LOGG_B_cf, &_var_lov., &_cnt_lov., &_ol_ds_cf., &_out_ds_dev_cf., &_out_ds_val_cf.);
+			%woe_create(&_woe_rr_diff_cf1., _subset_cf, &_woe_pp_diff_cf., _subset_cf_val, _LOGG_B_cf, &_var_lov_k., &_cnt_lov_k., &_ol_ds_cf., &_out_ds_dev_cf., &_out_ds_val_cf.);
 		%end;
 
 		%else %if %sysevalf(&_var_sign_cf. lt 0) %then %do;
-			%woe_create(&_woe_rr_diff_cf., _subset_cf, &_woe_pp_diff_cf., _subset_cf_val, _LOGG_B_cf, &_var_lov., &_cnt_lov., &_ol_ds_cf., &_out_ds_dev_cf., &_out_ds_val_cf.);
+			%woe_create(&_woe_rr_diff_cf., _subset_cf, &_woe_pp_diff_cf., _subset_cf_val, _LOGG_B_cf, &_var_lov_k., &_cnt_lov_k., &_ol_ds_cf., &_out_ds_dev_cf., &_out_ds_val_cf.);
 		%end;	
 			
-		%indicator_create(&_woe_rr_diff_cf., _subset_cf, &_woe_pp_diff_cf., _subset_cf_val, _LOGG_B_cf, &_var_lov., &_cnt_lov., &_ol_ds_cf., &_out_ds_dev_cf., &_out_ds_val_cf.);
+		%indicator_create(&_woe_rr_diff_cf., _subset_cf, &_woe_pp_diff_cf., _subset_cf_val, _LOGG_B_cf, &_var_lov_k., &_cnt_lov_k., &_ol_ds_cf., &_out_ds_dev_cf., &_out_ds_val_cf.);
 
 	%mend woe_create_calls_macro_cf;
 
-	%loop_over_varlist(&_vl_gvfd., woe_create_calls_macro_cf);
+	%loop_over_varlist(&_vl_gvfd., woe_create_calls_macro_cf, k);
 	
 	ods html close;
 	

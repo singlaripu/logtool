@@ -6,7 +6,7 @@
 
 		%&_flat_macro_lovid.;
 
-		%loop_over_varlist(&_vl_lovid., &_mn_lovid.);
+		%loop_over_varlist(&_vl_lovid., &_mn_lovid., l);
 
 	run;
 

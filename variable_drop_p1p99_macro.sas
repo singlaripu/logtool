@@ -6,9 +6,9 @@
 	%macro dummy_macro; %mend dummy_macro;
 
 	%macro p99_le_p1;
-		if var&_cnt_lov._p99_ le  var&_cnt_lov._p1_ then &_var_lov. = 1;
-		else &_var_lov. = 0;
-		drop var&_cnt_lov._p99_ var&_cnt_lov._p1_;
+		if var&_cnt_lov_l._p99_ le  var&_cnt_lov_l._p1_ then &_var_lov_l. = 1;
+		else &_var_lov_l. = 0;
+		drop var&_cnt_lov_l._p99_ var&_cnt_lov_l._p1_;
 	%mend;
 
 	%loop_over_varlist_in_ds(merged_vdpm, , &_vl_vdpm., p99_le_p1, dummy_macro);	
