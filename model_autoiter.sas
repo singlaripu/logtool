@@ -18,22 +18,20 @@
 		set _null_;
 	run;
 
+
 	%macro call_mia_macro;
 
-		title "&_var_lov.";	
-		%let _var_list_ma = &_existing_ma. &_existing_transform_ma. &_var_lov.;
-		%model_input_autoiter(_x_dev_ma, _x_val_ma, &_var_list_ma., &_var_lov., _stats_summary_ma, &_var_identifier_ma.);
-
+		%let _var_list_ma = &_existing_ma. &_existing_transform_ma. &_var_lov_i.;
+		%model_input_autoiter(_x_dev_ma, _x_val_ma, &_var_list_ma., &_var_lov_i., _stats_summary_ma, &_var_identifier_ma.);
+		 
 		data &_ds_sum_ma.;	
 			format &_var_identifier_ma. $32.;			
 			set &_ds_sum_ma. _stats_summary_ma;
 		run;
 
-		proc print data = _stats_summary_ma; run;	
-
 	%mend call_mia_macro;
 
-	%loop_over_varlist(&_newvar_comb_ma., call_mia_macro);
+	%loop_over_varlist(&_newvar_comb_ma., call_mia_macro, i);
 
 %mend;
 
