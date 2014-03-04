@@ -1,4 +1,4 @@
-options obs = max compress = yes nosource nosource2 nonotes;
+options obs = max compress = yes nosource nosource2 nonotes ERRORS=2;
 
 /* options mstored sasmstore=maclib nofmterr label errors=2 ls=100 ps=50 compress=yes obs=max ; */
 /* options symbolgen mlogic mprint mfile; */
